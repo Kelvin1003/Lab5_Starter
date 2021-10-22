@@ -9,10 +9,10 @@ window.addEventListener('DOMContentLoaded', init);
 
 function init() {
   voiceList = $('#voice-select');
-  setTimeout(() => {
-    console.log(window.speechSynthesis.getVoices());
-}, 100);
-  // showVoiceList();
+//   setTimeout(() => {
+//     console.log(window.speechSynthesis.getVoices());
+// }, 100);
+  showVoiceList();
 }
 
 function showVoiceList() {
