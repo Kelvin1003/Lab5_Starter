@@ -65,7 +65,7 @@ function playAudio() {
   audioShow.volume = volumeChoice.value / 100;
   audioShow.play();
 
-  if (imageChoice.value == "party-horn") {
+  if (imageChoice.value == "party-horn" && volumeChoice.value != 0) {
     jsConfetti.addConfetti();
   }
 }
