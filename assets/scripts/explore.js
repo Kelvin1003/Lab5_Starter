@@ -3,29 +3,50 @@
 const $ = (selector) => document.querySelector(selector);
 
 let voiceList;
+let talkButton;
+let speakText;
+let smileImg;
+let voiceTypes = [];
+
+speechSynthesis.getVoices();
 
 window.addEventListener('DOMContentLoaded', init);
 
 
 function init() {
   voiceList = $('#voice-select');
-//   setTimeout(() => {
-//     console.log(window.speechSynthesis.getVoices());
-// }, 100);
-  showVoiceList();
+  talkButton = $('button');
+  speakText = $('#text-to-speak');
+  smileImg = $('header+img');
+
+  setTimeout(() => {
+    showVoiceList();
+  }, 50);
+  talkButton.addEventListener("click", playTalk);
 }
 
 function showVoiceList() {
-  let voices = window.speechSynthesis.getVoices();
-  setTimeout(() => {
-    console.log(voices);
-    for (let i = 0; i < voices.length ; i++) {
-      let newOption = document.createElement('option');
-      newOption.textContent = `${voices[i].name} (${voices[i].lang})`;
-      newOption.setAttribute('value', voices[i].name);
-      voiceList.appendChild(newOption);
-    }
-  }, 2000);
-
+  voiceTypes = speechSynthesis.getVoices();
+  for (let voiceType of voiceTypes) {
+    let newOption = document.createElement('option');
+    newOption.textContent = `${voiceType.name} (${voiceType.lang})`;
+    newOption.setAttribute('value', voiceType.name);
+    voiceList.appendChild(newOption);
+  }
 }
 
+function playTalk() {
+  let newUtterance = new SpeechSynthesisUtterance(speakText.value);
+  for(let voiceType of voiceTypes) {
+    if(voiceType.name === voiceList.value) {
+      newUtterance.voice = voiceType;
+    }
+  }
+  speechSynthesis.speak(newUtterance);
+  smileImg.src = "assets/images/smiling-open.png";
+  newUtterance.addEventListener('end', checkSpeaking);
+}
+
+function checkSpeaking() {
+  smileImg.src = "assets/images/smiling.png";
+}
